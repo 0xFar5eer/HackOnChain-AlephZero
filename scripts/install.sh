@@ -1,4 +1,4 @@
-apt install -y curl git binaryen openssl
+apt install -y curl git binaryen openssl libssl-dev
 curl https://sh.rustup.rs -sSf | sh
 source "$HOME/.cargo/env"
 rustup toolchain add nightly

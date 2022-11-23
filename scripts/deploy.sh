@@ -11,7 +11,7 @@ STAKE_VOTING_CODE_HASH=$(cargo contract upload --quiet --url "$NODE_URL" --suri 
 STAKE_VOTING_CODE_HASH=$(echo "$STAKE_VOTING_CODE_HASH" | grep hash | tail -1 | cut -c 14-)
 echo "Stake voting code hash: $STAKE_VOTING_CODE_HASH"
 
-STAKE_VOTING=$(cargo contract instantiate --url "$NODE_URL" --suri "$AUTHORITY_SEED" --code-hash "$STAKE_VOTING_CODE_HASH" --constructor new --skip-confirm)
+STAKE_VOTING=$(cargo contract instantiate --url "$NODE_URL" --suri "$AUTHORITY_SEED" --code-hash "$STAKE_VOTING_CODE_HASH" --skip-confirm)
 
 # STAKE_VOTING=$(echo "$STAKE_VOTING" | grep -A3 "Event Contracts ➜ Instantiated" | grep contract | tail -1 | cut -d ' ' -f11)
 # echo "Bulletin board instance address: $STAKE_VOTING"
