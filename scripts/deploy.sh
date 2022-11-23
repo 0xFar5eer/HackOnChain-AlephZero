@@ -8,6 +8,8 @@ cd "$CONTRACTS_PATH"/stake_voting && cargo +nightly contract build --release
 
 
 STAKE_VOTING_CODE_HASH=$(cargo contract upload --quiet --url "$NODE_URL" --suri "$AUTHORITY_SEED" target/ink/stake_voting.wasm --skip-confirm)
+echo "$STAKE_VOTING_CODE_HASH\n\n"
+
 STAKE_VOTING_CODE_HASH=$(echo "$STAKE_VOTING_CODE_HASH" | grep hash | tail -1 | cut -c 14-)
 echo "Stake voting code hash: $STAKE_VOTING_CODE_HASH"
 
