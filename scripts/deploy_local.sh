@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source $(pwd)/scripts/env/local
+source $(pwd)/env/local
 
-$(pwd)/scripts/deploy.sh
+$(pwd)/deploy.sh
 
