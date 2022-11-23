@@ -10,16 +10,8 @@ mod stake_voting {
         Mapping,
     };
 
-    #[derive(
-        Debug,
-        Default,
-        Clone,
-        PackedLayout,
-        SpreadLayout,
-        scale::Decode,
-        scale::Encode,
-        scale_info::TypeInfo,
-    )]
+    #[derive(Debug, Default, Clone, PackedLayout, SpreadLayout, scale::Decode, scale::Encode)]
+    #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
     pub struct StakeOperatorInformation {
         stake_operator_id: AccountId,
         name: String,
@@ -33,8 +25,9 @@ mod stake_voting {
     #[ink(storage)]
     #[derive(Default, SpreadAllocate)]
     pub struct StakeOperatorsVotes {
-        list_of_stake_operators: Vec<StakeOperatorInformation>,
         stake_operator_id_to_position: Mapping<AccountId, u32>,
+        position_to_stake_operator_information: Mapping<u32, StakeOperatorInformation>,
+        length_of_stake_operator_information_list: u32,
     }
 
     impl StakeOperatorsVotes {
@@ -50,11 +43,12 @@ mod stake_voting {
             &mut self,
             stake_operator_information: StakeOperatorInformation,
         ) {
-            let pos = self.list_of_stake_operators.len() as u32;
+            let pos = self.length_of_stake_operator_information_list;
+            self.length_of_stake_operator_information_list += 1;
+            self.position_to_stake_operator_information
+                .insert(pos, &stake_operator_information);
             self.stake_operator_id_to_position
-                .insert(stake_operator_information.stake_operator_id.clone(), &pos);
-            self.list_of_stake_operators
-                .push(stake_operator_information);
+                .insert(stake_operator_information.stake_operator_id, &pos);
         }
 
         #[ink(message)]
@@ -62,21 +56,33 @@ mod stake_voting {
             &mut self,
             stake_operator_information_list: Vec<StakeOperatorInformation>,
         ) {
-            let initial_pos = self.list_of_stake_operators.len() as u32;
+            let initial_pos = self.length_of_stake_operator_information_list;
+            self.length_of_stake_operator_information_list +=
+                stake_operator_information_list.len() as u32;
+
             for (i, stake_operator_information) in
                 stake_operator_information_list.into_iter().enumerate()
             {
                 let pos = initial_pos + i as u32;
+                self.position_to_stake_operator_information
+                    .insert(pos, &stake_operator_information);
                 self.stake_operator_id_to_position
-                    .insert(stake_operator_information.stake_operator_id.clone(), &pos);
-                self.list_of_stake_operators
-                    .push(stake_operator_information);
+                    .insert(stake_operator_information.stake_operator_id, &pos);
             }
         }
 
         #[ink(message)]
         pub fn get_stake_operators(&self) -> Vec<StakeOperatorInformation> {
-            self.list_of_stake_operators.clone()
+            let mut output = Vec::new();
+            for i in 0..self.length_of_stake_operator_information_list {
+                output.push(
+                    self.position_to_stake_operator_information
+                        .get(i)
+                        .unwrap_or_default(),
+                );
+            }
+
+            output
         }
     }
     // #[cfg(test)]
