@@ -1,6 +1,6 @@
 [package]
 name = "stake_voting"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["0xFar5eer 0xFar5eer@gmail.com"]
 edition = "2021"
 
