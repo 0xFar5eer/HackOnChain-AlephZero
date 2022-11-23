@@ -13,7 +13,7 @@ echo "$STAKE_VOTING_CODE_HASH\n\n"
 STAKE_VOTING_CODE_HASH=$(echo "$STAKE_VOTING_CODE_HASH" | grep hash | tail -1 | cut -c 14-)
 echo "Stake voting code hash: $STAKE_VOTING_CODE_HASH"
 
-STAKE_VOTING=$(cargo contract instantiate --url "$NODE_URL" --suri "$AUTHORITY_SEED" --code-hash "$STAKE_VOTING_CODE_HASH" --skip-confirm)
+STAKE_VOTING=$(cargo contract instantiate --url "$NODE_URL" --suri "$AUTHORITY_SEED" --code-hash "$STAKE_VOTING_CODE_HASH" --constructor default --skip-confirm)
 echo "$STAKE_VOTING\n\n"
 
 STAKE_VOTING=$(echo "$STAKE_VOTING" | grep -A3 "Event Contracts ➜ Instantiated" | grep contract | tail -1 | cut -d ' ' -f11)
