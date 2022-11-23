@@ -37,8 +37,8 @@ mod stake_voting {
             ink_lang::utils::initialize_contract(|contract: &mut Self| {
                 // occupying 0th slot with empty element
                 contract.length_of_stake_operator_information_list = 1;
-                contract.stake_operator_id_to_voter_id = Mapping::default();
                 contract.stake_operator_id_to_position = Mapping::default();
+                contract.stake_operator_id_to_voter_id = Mapping::default();
                 contract.position_to_stake_operator_information = Mapping::default();
                 contract
                     .position_to_stake_operator_information
