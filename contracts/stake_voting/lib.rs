@@ -25,6 +25,7 @@ mod stake_voting {
     #[ink(storage)]
     #[derive(Default, SpreadAllocate)]
     pub struct StakeOperatorsVotes {
+        stake_operator_id_to_voter_id: Mapping<AccountId, Mapping<AccountId, bool>>,
         stake_operator_id_to_position: Mapping<AccountId, u32>,
         position_to_stake_operator_information: Mapping<u32, StakeOperatorInformation>,
         length_of_stake_operator_information_list: u32,
@@ -36,6 +37,7 @@ mod stake_voting {
             ink_lang::utils::initialize_contract(|contract: &mut Self| {
                 // occupying 0th slot with empty element
                 contract.length_of_stake_operator_information_list = 1;
+                contract.stake_operator_id_to_voter_id = Mapping::default();
                 contract.stake_operator_id_to_position = Mapping::default();
                 contract.position_to_stake_operator_information = Mapping::default();
                 contract
@@ -43,6 +45,8 @@ mod stake_voting {
                     .insert(0, &StakeOperatorInformation::default());
             })
         }
+
+        // TODO: add vote, add get_caller_already_voted_for_list_of_stake_operator_ids
 
         #[ink(message)]
         pub fn add_one_stake_operator(
