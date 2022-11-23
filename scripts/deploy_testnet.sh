@@ -6,5 +6,5 @@ source $(pwd)/env/testnet
 
 git pull
 
-$(pwd)/deploy.sh
+$(pwd)/_deploy.sh
 
