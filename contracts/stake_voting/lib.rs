@@ -33,9 +33,15 @@ mod stake_voting {
     impl StakeOperatorsVotes {
         #[ink(constructor)]
         pub fn default() -> Self {
-            // This call is required in order to correctly initialize the
-            // `Mapping`s of our contract.
-            ink_lang::utils::initialize_contract(|_: &mut Self| {})
+            ink_lang::utils::initialize_contract(|contract: &mut Self| {
+                // occupying 0th slot with empty element
+                contract.length_of_stake_operator_information_list = 1;
+                contract.stake_operator_id_to_position = Mapping::default();
+                contract.position_to_stake_operator_information = Mapping::default();
+                contract
+                    .position_to_stake_operator_information
+                    .insert(0, &StakeOperatorInformation::default());
+            })
         }
 
         #[ink(message)]
@@ -74,7 +80,7 @@ mod stake_voting {
         #[ink(message)]
         pub fn get_stake_operators(&self) -> Vec<StakeOperatorInformation> {
             let mut output = Vec::new();
-            for i in 0..self.length_of_stake_operator_information_list {
+            for i in 1..self.length_of_stake_operator_information_list {
                 output.push(
                     self.position_to_stake_operator_information
                         .get(i)
@@ -83,6 +89,21 @@ mod stake_voting {
             }
 
             output
+        }
+
+        #[ink(message)]
+        pub fn get_stake_operator_by_account_id(
+            &self,
+            stake_operator_id: AccountId,
+        ) -> StakeOperatorInformation {
+            let pos = self
+                .stake_operator_id_to_position
+                .get(stake_operator_id)
+                .unwrap_or_default();
+
+            self.position_to_stake_operator_information
+                .get(pos)
+                .unwrap_or_default()
         }
     }
     // #[cfg(test)]
