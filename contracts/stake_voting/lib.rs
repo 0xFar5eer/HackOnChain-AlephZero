@@ -43,27 +43,35 @@ mod stake_voting {
                 contract
                     .position_to_stake_operator_information
                     .insert(0, &StakeOperatorInformation::default());
+
+                contract.initialize()
             })
         }
 
         #[ink(message)]
         pub fn initialize(&mut self) {
+            // this function does not work, I am getting ContractTrapped error
+            // I wish I knew what that means and how to fix it
+
             // adding testnet validators list
             let addrs: Vec<[u8; 32]> = vec![
-                "5Eo5ZxVUGbT6D8cfAvAxQFhzt3ZqBEb5oE8KCWR9vjvTPSMy",
-                "5GW5kbpuYn8Wa2253xLNLn9dZYWJUPJmW7VwmjnziDWdGxiX",
-                "5CGTtuqDbBQokPQjpa4mQyNKyvYxKpgtZEskDkJxzho1NhbM",
-                "5HYzfrjAMGB6zWW3oTg7dhGdWB8cawyU84fCpGar9QhupweS",
-                "5Dkh7kuPm4NMfkmDG1LaVZVWXW3WHYwh7BKEFfNvPiGDrARH",
-                "5HNnDD5djTaiUt3A6yf6f1E9oDiM5w5fcNBTLLCoMKf1TEdS",
-                "5Grh6bLQmoxinEeiijAfSbGYrYiKhxnxcM2m96s5A64VyAiF",
-                "5DATX2UZZgxAsumbVEsmup2q6LR9Bn81F7KW7PsShgUw8t12",
-                "5FnyjESMB4EBQn1W1vnNKZ5oVUYUmQbTPG4hZbJJm8697TKt",
-                "5GN3rbR41UYWtjoxeuyvBfWEPopH4C2R4z7qhtz2ysF5hmrt",
-            ]
-            .into_iter()
-            .map(|a| a.as_bytes().try_into().unwrap())
-            .collect::<Vec<_>>();
+                [0x0; 32], [0x1; 32], [0x2; 32], [0x3; 32], [0x4; 32], [0x5; 32], [0x6; 32],
+                [0x7; 32], [0x8; 32],
+                [0x9; 32],
+                // "5Eo5ZxVUGbT6D8cfAvAxQFhzt3ZqBEb5oE8KCWR9vjvTPSMy",
+                // "5GW5kbpuYn8Wa2253xLNLn9dZYWJUPJmW7VwmjnziDWdGxiX",
+                // "5CGTtuqDbBQokPQjpa4mQyNKyvYxKpgtZEskDkJxzho1NhbM",
+                // "5HYzfrjAMGB6zWW3oTg7dhGdWB8cawyU84fCpGar9QhupweS",
+                // "5Dkh7kuPm4NMfkmDG1LaVZVWXW3WHYwh7BKEFfNvPiGDrARH",
+                // "5HNnDD5djTaiUt3A6yf6f1E9oDiM5w5fcNBTLLCoMKf1TEdS",
+                // "5Grh6bLQmoxinEeiijAfSbGYrYiKhxnxcM2m96s5A64VyAiF",
+                // "5DATX2UZZgxAsumbVEsmup2q6LR9Bn81F7KW7PsShgUw8t12",
+                // "5FnyjESMB4EBQn1W1vnNKZ5oVUYUmQbTPG4hZbJJm8697TKt",
+                // "5GN3rbR41UYWtjoxeuyvBfWEPopH4C2R4z7qhtz2ysF5hmrt",
+            ];
+            // .into_iter()
+            // .map(|a| a.as_bytes().try_into().unwrap())
+            // .collect::<Vec<_>>();
 
             let stake_operators = vec![
                 StakeOperatorInformation {
