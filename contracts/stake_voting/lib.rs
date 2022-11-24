@@ -48,11 +48,7 @@ mod stake_voting {
             })
         }
 
-        #[ink(message)]
-        pub fn initialize(&mut self) {
-            // this function does not work, I am getting ContractTrapped error
-            // I wish I knew what that means and how to fix it
-
+        fn initialize(&mut self) {
             // adding testnet validators list
             let addrs: Vec<[u8; 32]> = vec![
                 [0xa; 32], [0x1; 32], [0x2; 32], [0x3; 32], [0x4; 32], [0x5; 32], [0x6; 32],
