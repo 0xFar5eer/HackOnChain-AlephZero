@@ -190,8 +190,7 @@ mod stake_voting {
                 .position_to_stake_operator_information
                 .get(pos)
                 .unwrap_or_default();
-            stake_operator_information.vote_points =
-                stake_operator_information.vote_points + Self::env().balance();
+            stake_operator_information.vote_points = stake_operator_information.vote_points + 1;
 
             self.stake_operator_id_to_voter_id
                 .insert((stake_operator_id, Self::env().caller()), &true);
