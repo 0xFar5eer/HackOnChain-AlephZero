@@ -5,6 +5,7 @@ set -euo pipefail
 CONTRACTS_PATH=$(pwd)/../contracts
 
 cd "$CONTRACTS_PATH"/stake_voting && cargo +nightly contract build --release
+cp -rf $(pwd)/../contracts/stake_voting/target/ink/metadata.json $(pwd)/../contracts/stake_voting/target/ink/stake_voting.* /media/sf_Downloads/
 
 
 STAKE_VOTING_CODE_HASH=$(cargo contract upload --quiet --url "$NODE_URL" --suri "$AUTHORITY_SEED" target/ink/stake_voting.wasm --skip-confirm)
@@ -19,5 +20,3 @@ echo "$STAKE_VOTING\n\n"
 
 STAKE_VOTING=$(echo "$STAKE_VOTING" | grep -A3 "Event Contracts ➜ Instantiated" | grep contract | tail -1 | cut -d ' ' -f11)
 echo "Stake voting instance address: $STAKE_VOTING"
-
-cp -rf $(pwd)/../contracts/stake_voting/target/ink/metadata.json $(pwd)/../contracts/stake_voting/target/ink/stake_voting.* /media/sf_Downloads/
