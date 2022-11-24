@@ -176,9 +176,8 @@ mod stake_voting {
             }
 
             // check if already voted
-            let voted = self
-                .stake_operator_id_to_voter_id
-                .get((stake_operator_id, Self::env().caller()));
+            let voter_id = (stake_operator_id, Self::env().caller());
+            let voted = self.stake_operator_id_to_voter_id.get(voter_id);
             if let Some(voted) = voted {
                 if voted {
                     return;
@@ -191,9 +190,10 @@ mod stake_voting {
                 .get(pos)
                 .unwrap_or_default();
             stake_operator_information.vote_points = stake_operator_information.vote_points + 1;
+            self.position_to_stake_operator_information
+                .insert(pos, &stake_operator_information);
 
-            self.stake_operator_id_to_voter_id
-                .insert((stake_operator_id, Self::env().caller()), &true);
+            self.stake_operator_id_to_voter_id.insert(voter_id, &true);
         }
 
         #[ink(message)]
