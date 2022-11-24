@@ -43,35 +43,173 @@ mod stake_voting {
                 contract
                     .position_to_stake_operator_information
                     .insert(0, &StakeOperatorInformation::default());
+
+                // adding testnet validators list
+                let addrs: Vec<[u8; 32]> = vec![
+                    "5Eo5ZxVUGbT6D8cfAvAxQFhzt3ZqBEb5oE8KCWR9vjvTPSMy",
+                    "5GW5kbpuYn8Wa2253xLNLn9dZYWJUPJmW7VwmjnziDWdGxiX",
+                    "5CGTtuqDbBQokPQjpa4mQyNKyvYxKpgtZEskDkJxzho1NhbM",
+                    "5HYzfrjAMGB6zWW3oTg7dhGdWB8cawyU84fCpGar9QhupweS",
+                    "5Dkh7kuPm4NMfkmDG1LaVZVWXW3WHYwh7BKEFfNvPiGDrARH",
+                    "5HNnDD5djTaiUt3A6yf6f1E9oDiM5w5fcNBTLLCoMKf1TEdS",
+                    "5Grh6bLQmoxinEeiijAfSbGYrYiKhxnxcM2m96s5A64VyAiF",
+                    "5DATX2UZZgxAsumbVEsmup2q6LR9Bn81F7KW7PsShgUw8t12",
+                    "5FnyjESMB4EBQn1W1vnNKZ5oVUYUmQbTPG4hZbJJm8697TKt",
+                    "5GN3rbR41UYWtjoxeuyvBfWEPopH4C2R4z7qhtz2ysF5hmrt",
+                ]
+                .into_iter()
+                .map(|a| a.as_bytes().try_into().unwrap())
+                .collect::<Vec<_>>();
+
+                let stake_operators = vec![
+                    StakeOperatorInformation {
+                        name: "AZF/SHANNON".to_string(),
+                        commission: 0,
+                        other_staked: 3_218_000,
+                        own_staked: 642_722,
+                        total_stakers: 618,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[0]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/SIERPINSKI".to_string(),
+                        commission: 0,
+                        other_staked: 334_565,
+                        own_staked: 73_606,
+                        total_stakers: 509,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[1]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/CANTOR".to_string(),
+                        commission: 0,
+                        other_staked: 567_941,
+                        own_staked: 229_798,
+                        total_stakers: 515,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[2]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/HILBERT".to_string(),
+                        commission: 0,
+                        other_staked: 303_097,
+                        own_staked: 140_053,
+                        total_stakers: 515,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[3]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/FERMAT".to_string(),
+                        commission: 0,
+                        other_staked: 498_871,
+                        own_staked: 142_356,
+                        total_stakers: 511,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[4]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/RAMANUJAN".to_string(),
+                        commission: 0,
+                        other_staked: 699_972,
+                        own_staked: 300_787,
+                        total_stakers: 515,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[5]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/GALOIS".to_string(),
+                        commission: 0,
+                        other_staked: 243_081,
+                        own_staked: 73_132,
+                        total_stakers: 504,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[6]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/RIEMANN".to_string(),
+                        commission: 0,
+                        other_staked: 202_892,
+                        own_staked: 119_877,
+                        total_stakers: 517,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[7]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/CAUCHY".to_string(),
+                        commission: 0,
+                        other_staked: 202_892,
+                        own_staked: 50_355,
+                        total_stakers: 500,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[8]),
+                    },
+                    StakeOperatorInformation {
+                        name: "AZF/LAPLACE".to_string(),
+                        commission: 0,
+                        other_staked: 859_746,
+                        own_staked: 224_547,
+                        total_stakers: 502,
+                        vote_points: 0,
+                        stake_operator_id: AccountId::from(addrs[9]),
+                    },
+                ];
+
+                contract.length_of_stake_operator_information_list += stake_operators.len() as u32;
+                for (i, stake_operator_information) in stake_operators.into_iter().enumerate() {
+                    let pos = i as u32 + 1;
+                    contract
+                        .stake_operator_id_to_position
+                        .insert(stake_operator_information.stake_operator_id, &pos);
+                    contract
+                        .position_to_stake_operator_information
+                        .insert(pos, &stake_operator_information);
+                }
             })
         }
 
         #[ink(message)]
         pub fn add_vote(&mut self, stake_operator_id: AccountId) {
-            // let pos = self.stake_operator_id_to_position.get(stake_operator_id);
-            // if let None = pos {
-            //     return;
-            // }
+            let pos = self.stake_operator_id_to_position.get(stake_operator_id);
+            if let None = pos {
+                return;
+            }
 
-            // let pos = pos.unwrap();
-            // let mut stake_operator_information = self
-            //     .position_to_stake_operator_information
-            //     .get(pos)
-            //     .unwrap_or_default();
-            // stake_operator_information.vote_points =
-            //     stake_operator_information.vote_points + ink_env::balance();
+            let pos = pos.unwrap();
+            let mut stake_operator_information = self
+                .position_to_stake_operator_information
+                .get(pos)
+                .unwrap_or_default();
+            stake_operator_information.vote_points =
+                stake_operator_information.vote_points + Self::env().balance();
 
-            // self.stake_operator_id_to_voter_id
-            //     .insert((stake_operator_id, ink_env::caller()), &true);
-
-            // self.length_of_stake_operator_information_list += 1;
-            // self.position_to_stake_operator_information
-            //     .insert(pos, &stake_operator_information);
-            // self.stake_operator_id_to_position
-            //     .insert(stake_operator_information.stake_operator_id, &pos);
+            self.stake_operator_id_to_voter_id
+                .insert((stake_operator_id, Self::env().caller()), &true);
         }
 
-        // TODO: add vote, add get_caller_already_voted_for_list_of_stake_operator_ids
+        #[ink(message)]
+        pub fn get_stake_operator_ids_already_voted_for(&self) -> Vec<AccountId> {
+            let mut output = Vec::new();
+            let caller = Self::env().caller();
+            for i in 1..self.length_of_stake_operator_information_list {
+                let stake_operator_information = self
+                    .position_to_stake_operator_information
+                    .get(i)
+                    .unwrap_or_default();
+                let voter = self
+                    .stake_operator_id_to_voter_id
+                    .get((stake_operator_information.stake_operator_id, caller));
+                if let None = voter {
+                    continue;
+                }
+
+                let voter = voter.unwrap();
+                if voter {
+                    output.push(stake_operator_information.stake_operator_id);
+                }
+            }
+
+            output
+        }
 
         #[ink(message)]
         pub fn add_one_stake_operator(
