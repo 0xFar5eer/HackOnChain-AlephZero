@@ -25,7 +25,7 @@ mod stake_voting {
     #[ink(storage)]
     #[derive(Default, SpreadAllocate)]
     pub struct StakeOperatorsVotes {
-        stake_operator_id_to_voter_id: Mapping<AccountId, Mapping<AccountId, bool>>,
+        stake_operator_id_to_voter_id: Mapping<(AccountId, AccountId), bool>,
         stake_operator_id_to_position: Mapping<AccountId, u32>,
         position_to_stake_operator_information: Mapping<u32, StakeOperatorInformation>,
         length_of_stake_operator_information_list: u32,
@@ -44,6 +44,32 @@ mod stake_voting {
                     .position_to_stake_operator_information
                     .insert(0, &StakeOperatorInformation::default());
             })
+        }
+
+        #[ink(message)]
+        pub fn add_vote(&mut self, stake_operator_id: AccountId) {
+
+            // let pos = self.stake_operator_id_to_position.get(stake_operator_id);
+            // if let None = pos {
+            //     return;
+            // }
+
+            // let pos = pos.unwrap();
+            // let mut stake_operator_information = self
+            //     .position_to_stake_operator_information
+            //     .get(pos)
+            //     .unwrap_or_default();
+            // stake_operator_information.vote_points =
+            //     stake_operator_information.vote_points + ink_env::balance();
+
+            // self.stake_operator_id_to_voter_id
+            //     .insert((stake_operator_id, ink_env::caller()), &true);
+
+            // self.length_of_stake_operator_information_list += 1;
+            // self.position_to_stake_operator_information
+            //     .insert(pos, &stake_operator_information);
+            // self.stake_operator_id_to_position
+            //     .insert(stake_operator_information.stake_operator_id, &pos);
         }
 
         // TODO: add vote, add get_caller_already_voted_for_list_of_stake_operator_ids
