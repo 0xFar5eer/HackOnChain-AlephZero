@@ -4,7 +4,7 @@ use ink_lang as ink;
 
 #[ink::contract]
 mod stake_voting {
-    use ink_prelude::{string::String, vec::Vec};
+    use ink_prelude::{string::String, vec, vec::Vec};
     use ink_storage::{
         traits::{PackedLayout, SpreadAllocate, SpreadLayout},
         Mapping,
