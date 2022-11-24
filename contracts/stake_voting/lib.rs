@@ -48,7 +48,6 @@ mod stake_voting {
 
         #[ink(message)]
         pub fn add_vote(&mut self, stake_operator_id: AccountId) {
-
             // let pos = self.stake_operator_id_to_position.get(stake_operator_id);
             // if let None = pos {
             //     return;
