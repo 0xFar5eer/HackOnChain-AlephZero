@@ -174,6 +174,16 @@ mod stake_voting {
                 return;
             }
 
+            // check if already voted
+            let voted = self
+                .stake_operator_id_to_voter_id
+                .get((stake_operator_id, Self::env().caller()));
+            if let Some(voted) = voted {
+                if voted {
+                    return;
+                }
+            }
+
             let pos = pos.unwrap();
             let mut stake_operator_information = self
                 .position_to_stake_operator_information
