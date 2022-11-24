@@ -63,7 +63,7 @@ mod stake_voting {
 
                 let stake_operators = vec![
                     StakeOperatorInformation {
-                        name: "AZF/SHANNON".to_string(),
+                        name: String::from("AZF/SHANNON"),
                         commission: 0,
                         other_staked: 3_218_000,
                         own_staked: 642_722,
@@ -72,7 +72,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[0]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/SIERPINSKI".to_string(),
+                        name: String::from("AZF/SIERPINSKI"),
                         commission: 0,
                         other_staked: 334_565,
                         own_staked: 73_606,
@@ -81,7 +81,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[1]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/CANTOR".to_string(),
+                        name: String::from("AZF/CANTOR"),
                         commission: 0,
                         other_staked: 567_941,
                         own_staked: 229_798,
@@ -90,7 +90,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[2]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/HILBERT".to_string(),
+                        name: String::from("AZF/HILBERT"),
                         commission: 0,
                         other_staked: 303_097,
                         own_staked: 140_053,
@@ -99,7 +99,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[3]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/FERMAT".to_string(),
+                        name: String::from("AZF/FERMAT"),
                         commission: 0,
                         other_staked: 498_871,
                         own_staked: 142_356,
@@ -108,7 +108,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[4]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/RAMANUJAN".to_string(),
+                        name: String::from("AZF/RAMANUJAN"),
                         commission: 0,
                         other_staked: 699_972,
                         own_staked: 300_787,
@@ -117,7 +117,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[5]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/GALOIS".to_string(),
+                        name: String::from("AZF/GALOIS"),
                         commission: 0,
                         other_staked: 243_081,
                         own_staked: 73_132,
@@ -126,7 +126,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[6]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/RIEMANN".to_string(),
+                        name: String::from("AZF/RIEMANN"),
                         commission: 0,
                         other_staked: 202_892,
                         own_staked: 119_877,
@@ -135,7 +135,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[7]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/CAUCHY".to_string(),
+                        name: String::from("AZF/CAUCHY"),
                         commission: 0,
                         other_staked: 202_892,
                         own_staked: 50_355,
@@ -144,7 +144,7 @@ mod stake_voting {
                         stake_operator_id: AccountId::from(addrs[8]),
                     },
                     StakeOperatorInformation {
-                        name: "AZF/LAPLACE".to_string(),
+                        name: String::from("AZF/LAPLACE"),
                         commission: 0,
                         other_staked: 859_746,
                         own_staked: 224_547,
