@@ -55,7 +55,7 @@ mod stake_voting {
 
             // adding testnet validators list
             let addrs: Vec<[u8; 32]> = vec![
-                [0x0; 32], [0x1; 32], [0x2; 32], [0x3; 32], [0x4; 32], [0x5; 32], [0x6; 32],
+                [0xa; 32], [0x1; 32], [0x2; 32], [0x3; 32], [0x4; 32], [0x5; 32], [0x6; 32],
                 [0x7; 32], [0x8; 32],
                 [0x9; 32],
                 // "5Eo5ZxVUGbT6D8cfAvAxQFhzt3ZqBEb5oE8KCWR9vjvTPSMy",
