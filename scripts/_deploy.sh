@@ -5,7 +5,7 @@ set -euo pipefail
 CONTRACTS_PATH=$(pwd)/../contracts
 
 cd "$CONTRACTS_PATH"/stake_voting && cargo +nightly contract build --release
-cp -rf $(pwd)/../contracts/stake_voting/target/ink/metadata.json $(pwd)/../contracts/stake_voting/target/ink/stake_voting.* /media/sf_Downloads/
+cp -rf ./target/ink/metadata.json ./target/ink/stake_voting.* /media/sf_Downloads/
 
 
 STAKE_VOTING_CODE_HASH=$(cargo contract upload --quiet --url "$NODE_URL" --suri "$AUTHORITY_SEED" target/ink/stake_voting.wasm --skip-confirm)
