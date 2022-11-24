@@ -25,7 +25,7 @@ mod stake_voting {
     #[ink(storage)]
     #[derive(Default, SpreadAllocate)]
     pub struct StakeOperatorsVotes {
-        stake_operator_id_to_voter_id: Mapping<(AccountId, AccountId), bool>,
+        voter_id_to_voted: Mapping<(AccountId, AccountId), bool>,
         stake_operator_id_to_position: Mapping<AccountId, u32>,
         position_to_stake_operator_information: Mapping<u32, StakeOperatorInformation>,
         length_of_stake_operator_information_list: u32,
@@ -38,7 +38,7 @@ mod stake_voting {
                 // occupying 0th slot with empty element
                 contract.length_of_stake_operator_information_list = 1;
                 contract.stake_operator_id_to_position = Mapping::default();
-                contract.stake_operator_id_to_voter_id = Mapping::default();
+                contract.voter_id_to_voted = Mapping::default();
                 contract.position_to_stake_operator_information = Mapping::default();
                 contract
                     .position_to_stake_operator_information
@@ -55,7 +55,7 @@ mod stake_voting {
 
             // check if already voted
             let voter_id = (stake_operator_id, Self::env().caller());
-            let voted = self.stake_operator_id_to_voter_id.get(voter_id);
+            let voted = self.voter_id_to_voted.get(voter_id);
             if let Some(voted) = voted {
                 if voted {
                     return;
@@ -71,21 +71,22 @@ mod stake_voting {
             self.position_to_stake_operator_information
                 .insert(pos, &stake_operator_information);
 
-            self.stake_operator_id_to_voter_id.insert(voter_id, &true);
+            self.voter_id_to_voted.insert(voter_id, &true);
         }
 
         #[ink(message)]
         pub fn get_stake_operator_ids_already_voted_for(&self) -> Vec<AccountId> {
             let mut output = Vec::new();
-            let caller = Self::env().caller();
             for i in 1..self.length_of_stake_operator_information_list {
                 let stake_operator_information = self
                     .position_to_stake_operator_information
                     .get(i)
                     .unwrap_or_default();
-                let voter = self
-                    .stake_operator_id_to_voter_id
-                    .get((stake_operator_information.stake_operator_id, caller));
+                let voter_id = (
+                    stake_operator_information.stake_operator_id,
+                    Self::env().caller(),
+                );
+                let voter = self.voter_id_to_voted.get(voter_id);
                 if let None = voter {
                     continue;
                 }
